@@ -1,0 +1,24 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Hotel Booking{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+<header><a class="brand" href="{% url 'accounts:home' %}">Hotel Booking</a>
+  <nav aria-label="Account navigation">
+    {% if user.is_authenticated %}
+      <span>{{ user.username }}</span>
+      <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="secondary" type="submit">Log out</button></form>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Log in</a>
+      <a href="{% url 'accounts:register' %}">Create account</a>
+    {% endif %}
+  </nav>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer>Hotel Booking · University project</footer>
+</body>
+</html>

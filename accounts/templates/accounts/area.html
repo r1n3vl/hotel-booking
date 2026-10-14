@@ -1,0 +1,9 @@
+{% extends 'accounts/base.html' %}
+{% block title %}{{ area }} area · Hotel Booking{% endblock %}
+{% block content %}<section class="panel wide">
+<p class="eyebrow">Protected area</p><h1>{{ area }} area</h1>
+<p>Your account has permission to access this page.</p>
+<p>This is an access demonstration. Catalogue and booking features will be added in later stages.</p>
+{% if area == 'Administrator' and user.is_staff %}<p><a href="{% url 'admin:index' %}">Manage users and groups</a></p>{% endif %}
+<a href="{% url 'accounts:home' %}">Back to your account</a>
+</section>{% endblock %}

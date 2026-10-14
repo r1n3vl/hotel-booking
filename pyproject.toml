@@ -1,0 +1,21 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "test_*.py"]
+testpaths = ["accounts", "hotels", "bookings"]
+addopts = "--strict-markers"
+
+[tool.coverage.run]
+source = ["accounts", "hotels", "bookings"]
+omit = ["*/migrations/*", "*/tests.py", "*/test_*.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 70
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

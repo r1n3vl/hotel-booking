@@ -1,0 +1,8 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Create account · Hotel Booking{% endblock %}
+{% block content %}<section class="panel">
+<p class="eyebrow">Welcome</p><h1>Create your account</h1>
+<p>Register as a customer. Use your username to log in.</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Create account</button></form>
+<p>Already registered? <a href="{% url 'accounts:login' %}">Log in</a></p>
+</section>{% endblock %}
