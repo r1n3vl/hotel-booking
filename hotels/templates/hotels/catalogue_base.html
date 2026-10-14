@@ -1,13 +1,15 @@
 {% extends 'accounts/base.html' %}{% load static %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'hotels/catalogue.css' %}">{% endblock %}
-{% block content %}<section class="panel catalogue">
+{% block extra_js %}{% if ajax_catalogue %}<script src="{% static 'hotels/catalogue.js' %}" defer></script>{% endif %}{% endblock %}
+{% block content %}<section class="panel catalogue"{% if ajax_catalogue %} data-async-catalogue aria-label="Search catalogue"{% endif %}>
+{% if ajax_catalogue %}<p data-catalogue-feedback role="status" aria-live="polite" hidden></p><button type="button" data-catalogue-retry hidden>Try again</button><div data-catalogue-content>{% endif %}
+{% block catalogue_content %}
 <p class="eyebrow">Explore your stay</p>
 {% block catalogue_heading %}{% endblock %}
-<form class="filters" method="get">
-{{ form.as_p }}
-<div class="filter-actions"><button type="submit">Apply filters</button><a href="{{ request.path }}">Reset filters</a></div>
-</form>
-{% if form.errors %}<p role="alert">Correct the filters above to see matching results.</p>{% endif %}
+{% include 'hotels/filter_form.html' %}
+<p class="table-hint">Swipe the table to see all columns.</p>
 {% block results %}{% endblock %}
 {% include 'hotels/pagination.html' %}
+{% endblock %}
+{% if ajax_catalogue %}</div>{% endif %}
 </section>{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'hotels/catalogue_fragment.html' %}
+{% block catalogue_heading %}<h1>Hotels</h1><p>Find a hotel by name, city or star rating.</p>{% endblock %}
+{% block results %}
+<p role="status">{{ page_obj.paginator.count }} hotel{{ page_obj.paginator.count|pluralize }} found</p>
+<div class="table-scroll" role="region" aria-label="Hotel results" tabindex="0">
+<table><caption>Available hotels</caption><thead><tr><th scope="col">Hotel</th><th scope="col">City</th><th scope="col">Stars</th><th scope="col">Address</th><th scope="col">Rooms</th></tr></thead>
+<tbody>{% for hotel in page_obj %}<tr><td>{{ hotel.name }}</td><td>{{ hotel.city }}</td><td>{{ hotel.stars }}</td><td>{{ hotel.address }}</td><td><a href="{% url 'hotels:room_list' %}?hotel={{ hotel.pk }}" aria-label="View rooms at {{ hotel.name }}">View rooms</a></td></tr>
+{% empty %}<tr><td colspan="5">{% if form.errors %}No results shown while filters are invalid.{% else %}No hotels match your filters.{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

@@ -8,6 +8,7 @@
   {% block extra_css %}{% endblock %}
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <header><a class="brand" href="{% url 'accounts:home' %}">Hotel Booking</a>
   <nav aria-label="Account navigation">
     {% if user.is_authenticated %}
@@ -23,7 +24,8 @@
     {% endif %}
   </nav>
 </header>
-<main>{% for message in messages %}<div class="flash {{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>{% endfor %}{% block content %}{% endblock %}</main>
+<main id="main-content" tabindex="-1">{% for message in messages %}<div class="flash {{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>{% endfor %}{% block content %}{% endblock %}</main>
 <footer>Hotel Booking · University project</footer>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

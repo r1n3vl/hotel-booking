@@ -1,6 +1,9 @@
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_GET
+from django.views.decorators.vary import vary_on_headers
 
 from accounts.access import permission_required
 from bookings.models import Booking
@@ -21,6 +24,23 @@ def catalogue_context(request, form, records):
     }
 
 
+def catalogue_response(request, name, form, records):
+    context = catalogue_context(request, form, records)
+    context["ajax_catalogue"] = True
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        page = context["page_obj"]
+        return JsonResponse(
+            {
+                "html": render_to_string(f"hotels/{name}_fragment.html", context, request=request),
+                "count": page.paginator.count,
+                "page": page.number,
+                "valid": not bool(form.errors),
+            }
+        )
+    return render(request, f"hotels/{name}_list.html", context)
+
+
+@vary_on_headers("X-Requested-With")
 @permission_required("hotels.view_hotel")
 @require_GET
 def hotel_list(request):
@@ -36,9 +56,10 @@ def hotel_list(request):
             hotels = hotels.filter(stars=data["stars"])
     else:
         hotels = hotels.none()
-    return render(request, "hotels/hotel_list.html", catalogue_context(request, form, hotels))
+    return catalogue_response(request, "hotel", form, hotels)
 
 
+@vary_on_headers("X-Requested-With")
 @permission_required("hotels.view_room")
 @require_GET
 def room_list(request):
@@ -69,4 +90,4 @@ def room_list(request):
             rooms = rooms.exclude(pk__in=occupied)
     else:
         rooms = rooms.none()
-    return render(request, "hotels/room_list.html", catalogue_context(request, form, rooms))
+    return catalogue_response(request, "room", form, rooms)

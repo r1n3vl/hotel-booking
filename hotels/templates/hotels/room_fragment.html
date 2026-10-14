@@ -1,0 +1,10 @@
+{% extends 'hotels/catalogue_fragment.html' %}
+{% block catalogue_heading %}<h1>Rooms</h1><p>Compare rooms and nightly prices in PLN. Enter both dates to check availability.</p><p>Availability is a search result; it does not reserve a room.</p>{% endblock %}
+{% block results %}
+<p role="status">{{ page_obj.paginator.count }} room{{ page_obj.paginator.count|pluralize }} found</p>
+<div class="table-scroll" role="region" aria-label="Room results" tabindex="0">
+<table><caption>Available rooms</caption><thead><tr><th scope="col">Hotel</th><th scope="col">City</th><th scope="col">Room</th><th scope="col">Type</th><th scope="col">Capacity</th><th scope="col">Price / night</th>{% if perms.bookings.add_booking %}<th scope="col">Booking</th>{% endif %}</tr></thead>
+<tbody>{% for room in page_obj %}<tr><td>{{ room.hotel.name }}</td><td>{{ room.hotel.city }}</td><td>{{ room.number }}</td><td>{{ room.get_room_type_display }}</td><td>{{ room.capacity }}</td><td class="price">{{ room.price_per_night|floatformat:2 }} PLN</td>{% if perms.bookings.add_booking %}<td><a href="{% url 'bookings:create' room_id=room.pk %}{% if form.is_valid and form.cleaned_data.check_in %}?check_in={{ form.cleaned_data.check_in|date:'Y-m-d' }}&amp;check_out={{ form.cleaned_data.check_out|date:'Y-m-d' }}{% endif %}" aria-label="Book room {{ room.number }} at {{ room.hotel.name }}">Book room</a></td>{% endif %}</tr>
+{% empty %}<tr><td colspan="{% if perms.bookings.add_booking %}7{% else %}6{% endif %}">{% if form.errors %}No results shown while filters are invalid.{% else %}No rooms match your filters.{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

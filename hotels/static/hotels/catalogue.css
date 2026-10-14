@@ -16,3 +16,19 @@ tbody tr:nth-child(even) { background: #f8fafc; }
 
 .editor select, .editor textarea { width: 100%; padding: .7rem; font: inherit; border: 1px solid #8b9bae; border-radius: .4rem; }
 .editor input[type="checkbox"] { display: inline-block; width: auto; }
+
+.filters { background: #f1f7f4; border: 1px solid #e0ebe6; }
+caption { background: #edf5f1; color: var(--ink); }
+thead { background: #f6f9f7; }
+tbody tr:nth-child(even) { background: #f8fbf9; }
+tbody tr:hover { background: #eef6f2; }
+th, td { overflow-wrap: anywhere; max-width: 24rem; }
+.table-scroll { max-width: 100%; }
+.pagination { flex-wrap: wrap; align-items: center; }
+.pagination a { padding: .55rem .9rem; border: 1px solid #c8ded8; border-radius: .45rem; background: #fff; }
+.table-hint { display: none; color: var(--muted); font-size: .85rem; }
+[data-catalogue-feedback] { padding: .7rem 1rem; border-radius: .5rem; background: #e8f3ee; }
+[data-catalogue-feedback].request-error { background: #fff0f0; color: #a12228; }
+[data-catalogue-retry] { margin-bottom: 1rem; }
+[aria-busy="true"] .table-scroll { opacity: .65; }
+@media (max-width: 760px) { .table-hint { display: block; } .table-scroll table { min-width: 40rem; } .catalogue { padding: 1rem; } }
