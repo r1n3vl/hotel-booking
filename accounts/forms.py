@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import PasswordResetForm, UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group
 from django.db import transaction
 
@@ -40,3 +40,8 @@ class AdminUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
         fields = "__all__"
+
+
+class NormalisedPasswordResetForm(PasswordResetForm):
+    def clean_email(self):
+        return UserManager.normalize_email(self.cleaned_data["email"])

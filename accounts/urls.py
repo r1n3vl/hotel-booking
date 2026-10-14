@@ -2,6 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from . import views
+from .reset_urls import urlpatterns as reset_patterns
 
 app_name = "accounts"
 urlpatterns = [
@@ -13,3 +14,5 @@ urlpatterns = [
     path("manager/", views.manager_area, name="manager_area"),
     path("administration/", views.admin_area, name="admin_area"),
 ]
+
+urlpatterns += reset_patterns
