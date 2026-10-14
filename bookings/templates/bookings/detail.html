@@ -16,5 +16,9 @@
 <dt>Price per night</dt><dd>{{ booking.price_per_night_snapshot|floatformat:2 }} PLN</dd>
 <dt>Total</dt><dd class="rate">{{ booking.total_price|floatformat:2 }} PLN</dd>
 </dl>
-<p><a href="{% url 'hotels:room_list' %}">Back to rooms</a></p>
+<div class="booking-actions">
+{% if can_confirm %}<form method="post" action="{% url 'bookings:confirm' pk=booking.pk %}">{% csrf_token %}<button type="submit">Confirm booking</button></form>{% endif %}
+{% if can_cancel %}<form method="post" action="{% url 'bookings:cancel' pk=booking.pk %}">{% csrf_token %}<button class="secondary" type="submit">Cancel booking</button></form>{% endif %}
+</div>
+<p><a href="{% url 'bookings:my_bookings' %}">My bookings</a>{% if perms.bookings.change_booking %} · <a href="{% url 'bookings:all_bookings' %}">All bookings</a>{% endif %} · <a href="{% url 'hotels:room_list' %}">Back to rooms</a></p>
 </section>{% endblock %}

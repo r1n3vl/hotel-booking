@@ -22,3 +22,8 @@ button { background: #1858a0; color: white; border: 1px solid #1858a0; border-ra
 .area span { display: block; color: #53647a; font-size: .9rem; }
 footer { text-align: center; color: #53647a; padding: 1rem; font-size: .85rem; }
 @media (max-width: 560px) { header { align-items: flex-start; flex-direction: column; } main { padding: 1rem; } .panel { padding: 1.2rem; } }
+
+header nav { max-width: 100%; min-width: 0; }
+header nav span { overflow-wrap: anywhere; }
+.flash { max-width: 76rem; margin: 0 auto 1rem; padding: .8rem 1rem; border-radius: .5rem; background: #eaf5ef; color: #24533b; overflow-wrap: anywhere; }
+.flash.error { background: #fff0f0; color: #a12228; }

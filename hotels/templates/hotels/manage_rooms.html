@@ -1,0 +1,7 @@
+{% extends 'hotels/catalogue_base.html' %}
+{% block title %}Manage rooms · Hotel Booking{% endblock %}
+{% block catalogue_heading %}<h1>Manage rooms</h1><p>Maintain prices, capacity and active status. Existing bookings retain their price snapshots.</p>{% if perms.hotels.add_room %}<p><a href="{% url 'hotels:room_create' %}">Add room</a></p>{% endif %}{% endblock %}
+{% block results %}<p role="status">{{ page_obj.paginator.count }} room{{ page_obj.paginator.count|pluralize }} found</p>
+<div class="table-scroll" role="region" aria-label="Managed rooms" tabindex="0"><table><caption>All rooms</caption><thead><tr><th scope="col">Hotel</th><th scope="col">Room</th><th scope="col">Type</th><th scope="col">Capacity</th><th scope="col">Price / night</th><th scope="col">Room active</th><th scope="col">Hotel active</th><th scope="col">Action</th></tr></thead><tbody>
+{% for room in page_obj %}<tr><td>{{ room.hotel.name }}</td><td>{{ room.number }}</td><td>{{ room.get_room_type_display }}</td><td>{{ room.capacity }}</td><td>{{ room.price_per_night|floatformat:2 }} PLN</td><td>{{ room.is_active|yesno:'Yes,No' }}</td><td>{{ room.hotel.is_active|yesno:'Yes,No' }}</td><td><a href="{% url 'hotels:room_update' pk=room.pk %}" aria-label="Edit room {{ room.number }} at {{ room.hotel.name }}">Edit</a></td></tr>{% empty %}<tr><td colspan="8">No rooms match the filters.</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods
 
 from accounts.access import permission_required
@@ -40,8 +41,20 @@ def booking_detail(request, pk):
     if not request.user.has_perm("bookings.change_booking"):
         bookings = bookings.filter(user=request.user)
     booking = get_object_or_404(bookings, pk=pk)
+    manager = request.user.has_perm("bookings.change_booking")
+    today = timezone.localdate()
     return render(
         request,
         "bookings/detail.html",
-        {"booking": booking, "nights": (booking.check_out - booking.check_in).days},
+        {
+            "booking": booking,
+            "nights": (booking.check_out - booking.check_in).days,
+            "can_confirm": manager
+            and booking.status == Booking.Status.PENDING
+            and booking.check_in >= today,
+            "can_cancel": booking.status in (Booking.Status.PENDING, Booking.Status.CONFIRMED)
+            and (
+                booking.check_in > today or (manager and booking.status == Booking.Status.PENDING)
+            ),
+        },
     )

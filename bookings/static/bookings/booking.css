@@ -4,3 +4,5 @@
 .booking-summary dt { font-weight: 650; }
 .booking-summary dd { margin: 0; overflow-wrap: anywhere; }
 @media (max-width: 560px) { .booking-summary { grid-template-columns: 1fr; gap: .25rem; } .booking-summary dd { margin-bottom: .75rem; } }
+
+.booking-actions { display: flex; flex-wrap: wrap; gap: 1rem; }

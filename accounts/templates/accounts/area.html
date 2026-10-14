@@ -3,7 +3,13 @@
 {% block content %}<section class="panel wide">
 <p class="eyebrow">Protected area</p><h1>{{ area }} area</h1>
 <p>Your account has permission to access this page.</p>
-<p>{% if area == 'Customer' %}Browse hotels and rooms using the catalogue links above.{% else %}This is an access demonstration. Management features will be added in a later stage.{% endif %}</p>
+<div class="areas">
+{% if area == 'Customer' %}{% if perms.bookings.view_booking %}<a class="area" href="{% url 'bookings:my_bookings' %}">My bookings</a>{% endif %}{% else %}
+{% if perms.hotels.change_hotel %}<a class="area" href="{% url 'hotels:manage_hotels' %}">Manage hotels</a>{% endif %}
+{% if perms.hotels.change_room %}<a class="area" href="{% url 'hotels:manage_rooms' %}">Manage rooms</a>{% endif %}
+{% if perms.bookings.change_booking %}<a class="area" href="{% url 'bookings:all_bookings' %}">All bookings</a>{% endif %}
+{% endif %}
+</div>
 {% if area == 'Administrator' and user.is_staff %}<p><a href="{% url 'admin:index' %}">Manage users and groups</a></p>{% endif %}
 <a href="{% url 'accounts:home' %}">Back to your account</a>
 </section>{% endblock %}

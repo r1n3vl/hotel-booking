@@ -13,3 +13,6 @@ tbody tr:nth-child(even) { background: #f8fafc; }
 .price { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
 @media (max-width: 560px) { .filters { grid-template-columns: 1fr; padding: .8rem; } th, td { padding: .7rem; } }
+
+.editor select, .editor textarea { width: 100%; padding: .7rem; font: inherit; border: 1px solid #8b9bae; border-radius: .4rem; }
+.editor input[type="checkbox"] { display: inline-block; width: auto; }

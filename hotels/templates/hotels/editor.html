@@ -1,0 +1,6 @@
+{% extends 'accounts/base.html' %}{% load static %}
+{% block title %}{{ title }} · Hotel Booking{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'hotels/catalogue.css' %}">{% endblock %}
+{% block content %}<section class="panel wide"><p class="eyebrow">Management</p><h1>{{ title }}</h1>
+<form method="post" class="editor">{% csrf_token %}{{ form.as_p }}<button type="submit">Save changes</button></form>
+<p><a href="{% url back_url %}">Back to management list</a></p></section>{% endblock %}
