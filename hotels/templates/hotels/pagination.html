@@ -1,0 +1,6 @@
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pagination" aria-label="Results pages">
+{% if page_obj.has_previous %}<a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>{% endif %}
+<span aria-current="page">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+{% if page_obj.has_next %}<a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>{% endif %}
+</nav>{% endif %}

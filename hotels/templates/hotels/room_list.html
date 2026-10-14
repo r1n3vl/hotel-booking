@@ -1,0 +1,11 @@
+{% extends 'hotels/catalogue_base.html' %}
+{% block title %}Rooms · Hotel Booking{% endblock %}
+{% block catalogue_heading %}<h1>Rooms</h1><p>Compare rooms and nightly prices in PLN. Enter both dates to check availability.</p><p>Availability is a search result; it does not reserve a room.</p>{% endblock %}
+{% block results %}
+<p role="status">{{ page_obj.paginator.count }} room{{ page_obj.paginator.count|pluralize }} found</p>
+<div class="table-scroll" role="region" aria-label="Room results" tabindex="0">
+<table><caption>Available rooms</caption><thead><tr><th scope="col">Hotel</th><th scope="col">City</th><th scope="col">Room</th><th scope="col">Type</th><th scope="col">Capacity</th><th scope="col">Price / night</th></tr></thead>
+<tbody>{% for room in page_obj %}<tr><td>{{ room.hotel.name }}</td><td>{{ room.hotel.city }}</td><td>{{ room.number }}</td><td>{{ room.get_room_type_display }}</td><td>{{ room.capacity }}</td><td class="price">{{ room.price_per_night|floatformat:2 }} PLN</td></tr>
+{% empty %}<tr><td colspan="6">{% if form.errors %}No results shown while filters are invalid.{% else %}No rooms match your filters.{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

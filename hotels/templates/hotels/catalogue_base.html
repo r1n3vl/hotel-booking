@@ -1,0 +1,13 @@
+{% extends 'accounts/base.html' %}{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'hotels/catalogue.css' %}">{% endblock %}
+{% block content %}<section class="panel catalogue">
+<p class="eyebrow">Explore your stay</p>
+{% block catalogue_heading %}{% endblock %}
+<form class="filters" method="get">
+{{ form.as_p }}
+<div class="filter-actions"><button type="submit">Apply filters</button><a href="{{ request.path }}">Reset filters</a></div>
+</form>
+{% if form.errors %}<p role="alert">Correct the filters above to see matching results.</p>{% endif %}
+{% block results %}{% endblock %}
+{% include 'hotels/pagination.html' %}
+</section>{% endblock %}
