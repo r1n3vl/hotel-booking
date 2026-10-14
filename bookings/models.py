@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 
+
 class Booking(models.Model):
     class Status(models.TextChoices):
         PENDING = "PENDING", "Pending"

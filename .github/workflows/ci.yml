@@ -1,0 +1,63 @@
+name: Tests and Docker
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      DJANGO_SECRET_KEY: ci-only-ephemeral-key-not-for-deployment-12345678901234567890
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,testserver
+      POSTGRES_DB: hotel_ci
+      POSTGRES_USER: hotel_ci
+      POSTGRES_PASSWORD: ci-only-ephemeral-password
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: "5432"
+      COMPOSE_PROJECT_NAME: hotelbooking-ci
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: hotel_ci
+          POSTGRES_USER: hotel_ci
+          POSTGRES_PASSWORD: ci-only-ephemeral-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U hotel_ci -d hotel_ci"
+          --health-interval=5s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.15"
+          cache: pip
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.19.0"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip check
+      - run: python -m ruff check .
+      - run: python manage.py check
+      - run: python manage.py makemigrations --check --dry-run
+      - run: python manage.py collectstatic --noinput
+      - run: python -m pytest --cov --cov-report=term-missing --cov-report=xml
+      - run: node --test --experimental-test-coverage --test-coverage-include="**/hotels/static/hotels/catalogue.js" tests/frontend/catalogue.test.cjs
+      - run: docker compose up -d --build --wait
+      - run: python -c "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8081/health/').status == 200; assert urllib.request.urlopen('http://127.0.0.1:8081/accounts/login/').status == 200; assert urllib.request.urlopen('http://127.0.0.1:8081/static/hotels/catalogue.js').status == 200"
+      - if: failure()
+        run: docker compose logs --tail=100 web
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-coverage
+          path: coverage.xml
+          if-no-files-found: ignore
+      - if: always()
+        run: docker compose down --volumes
