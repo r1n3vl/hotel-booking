@@ -1,0 +1,6 @@
+.rate { font-size: 1.35rem; font-weight: 750; margin: .5rem 0; }
+.status { display: inline-block; padding: .35rem .8rem; border-radius: .4rem; background: #eaf2fc; color: #1858a0; font-weight: 700; }
+.booking-summary { display: grid; grid-template-columns: minmax(8rem, 1fr) 2fr; gap: .8rem 1rem; padding: 1rem 0; }
+.booking-summary dt { font-weight: 650; }
+.booking-summary dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) { .booking-summary { grid-template-columns: 1fr; gap: .25rem; } .booking-summary dd { margin-bottom: .75rem; } }

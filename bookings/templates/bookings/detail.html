@@ -1,0 +1,20 @@
+{% extends 'accounts/base.html' %}{% load static %}
+{% block title %}Booking {{ booking.pk }} · Hotel Booking{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'bookings/booking.css' %}">{% endblock %}
+{% block content %}<section class="panel wide">
+<p class="eyebrow">Your reservation</p><h1>Booking #{{ booking.pk }}</h1>
+<p class="status" role="status">{{ booking.get_status_display }}</p>
+{% if booking.status == 'PENDING' %}<p>Your request has been saved and is awaiting confirmation.</p>{% endif %}
+<dl class="booking-summary">
+<dt>Hotel</dt><dd>{{ booking.room.hotel.name }} · {{ booking.room.hotel.city }}</dd>
+<dt>Room</dt><dd>{{ booking.room.number }} · {{ booking.room.get_room_type_display }}</dd>
+<dt>Customer</dt><dd>{{ booking.user.username }}</dd>
+<dt>Check-in</dt><dd>{{ booking.check_in|date:'Y-m-d' }}</dd>
+<dt>Check-out</dt><dd>{{ booking.check_out|date:'Y-m-d' }}</dd>
+<dt>Nights</dt><dd>{{ nights }}</dd>
+<dt>Guests</dt><dd>{{ booking.guests_count }}</dd>
+<dt>Price per night</dt><dd>{{ booking.price_per_night_snapshot|floatformat:2 }} PLN</dd>
+<dt>Total</dt><dd class="rate">{{ booking.total_price|floatformat:2 }} PLN</dd>
+</dl>
+<p><a href="{% url 'hotels:room_list' %}">Back to rooms</a></p>
+</section>{% endblock %}

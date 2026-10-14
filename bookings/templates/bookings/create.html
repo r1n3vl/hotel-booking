@@ -1,0 +1,11 @@
+{% extends 'accounts/base.html' %}{% load static %}
+{% block title %}Book a room · Hotel Booking{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'bookings/booking.css' %}">{% endblock %}
+{% block content %}<section class="panel wide">
+<p class="eyebrow">Plan your stay</p><h1>Book room {{ room.number }}</h1>
+<p><strong>{{ room.hotel.name }}</strong> · {{ room.hotel.city }}<br>{{ room.get_room_type_display }} · Up to {{ room.capacity }} guest{{ room.capacity|pluralize }}</p>
+<p class="rate">{{ room.price_per_night|floatformat:2 }} PLN per night</p>
+<p>The total is the number of nights multiplied by the current nightly price when you submit. Your request will have Pending status.</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Request booking</button></form>
+<p><a href="{% url 'hotels:room_list' %}?hotel={{ room.hotel_id }}">Back to hotel rooms</a></p>
+</section>{% endblock %}
