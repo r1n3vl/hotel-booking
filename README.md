@@ -49,7 +49,7 @@ Host Python is not required. Startup runs migrations and collects static files. 
 
 Automated tests cover authentication, permissions, validation, filters, booking rules, concurrency and password recovery. GitHub Actions runs checks, tests and Docker smoke tests with a minimum Python application statement coverage of 70%.
 
-The reviewed implementation is commit 4f7212e, whose CI run passed. sDeployment on the second Windows computer and current desktop/mobile appearance still require confirmation. Interface screenshots are not included in this file.
+The reviewed implementation is commit 4f7212e, whose CI run passed. Deployment on the second Windows computer and current desktop/mobile appearance still require confirmation. Interface screenshots are not included in this file.
 
 ## AI usage
 
