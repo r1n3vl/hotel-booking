@@ -16,7 +16,12 @@ CUSTOMER: browse catalogues, book rooms and manage their own eligible reservatio
 
 MANAGER: customer features plus hotel, room and booking management.
 
+## MANAGER ROLE ASSIGNING:
+docker compose exec web python manage.py set_role manager_demo MANAGER
+
 ADMIN: application access and Django administration for users and permissions.
+## ADMIN ROLE ASSIGNING:
+docker compose exec web python manage.py set_role admin_demo ADMIN
 
 Registration always assigns CUSTOMER. Protected pages require authentication and server-side permissions. Forms validate input, and customers cannot access other users’ bookings.
 
@@ -50,6 +55,21 @@ Host Python is not required. Startup runs migrations and collects static files. 
 Automated tests cover authentication, permissions, validation, filters, booking rules, concurrency and password recovery. GitHub Actions runs checks, tests and Docker smoke tests with a minimum Python application statement coverage of 70%.
 
 The reviewed implementation is commit 4f7212e, whose CI run passed. Deployment on the second Windows computer and current desktop/mobile appearance still require confirmation. Interface screenshots are not included in this file.
+
+## Composed Python Test:
+
+@'
+services:
+  web:
+    image: hotel-booking-tests:local
+    build:
+      target: test
+    entrypoint: []
+'@ | docker compose --env-file .env -f compose.yaml -f - run --build --rm --no-deps web python -m pytest --cov --cov-report=term-missing
+
+## Composed JavaScript Test:
+
+docker run --rm --mount "type=bind,source=$($PWD.Path),target=/work,readonly" --workdir /work node:24.19.0 node --test --experimental-test-coverage --test-coverage-include="**/hotels/static/hotels/catalogue.js" tests/frontend/catalogue.test.cjs
 
 ## AI usage
 
